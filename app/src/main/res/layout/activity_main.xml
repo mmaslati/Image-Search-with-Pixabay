@@ -7,38 +7,51 @@
     tools:context=".MainActivity"
     layout="@layout/content_main">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center_horizontal"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <com.arlib.floatingsearchview.FloatingSearchView
-                android:id="@+id/floating_search_view"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
-                app:floatingSearch_close_search_on_keyboard_dismiss="true"
-                app:floatingSearch_leftActionMode="showSearch"
-                app:floatingSearch_searchHint="Search..."
-                app:floatingSearch_showSearchKey="false"
-                app:floatingSearch_suggestionsListAnimDuration="250" />
-            <Button
-                android:id="@+id/searchButton"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search" />
-        </LinearLayout>
+                android:orientation="horizontal">
+
+                <com.arlib.floatingsearchview.FloatingSearchView
+                    android:id="@+id/floating_search_view"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    app:floatingSearch_close_search_on_keyboard_dismiss="true"
+                    app:floatingSearch_leftActionMode="showSearch"
+                    app:floatingSearch_searchHint="Search..."
+                    app:floatingSearch_showSearchKey="false"
+                    app:floatingSearch_suggestionsListAnimDuration="250" />
+                <Button
+                    android:id="@+id/searchButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search" />
+            </LinearLayout>
 
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gridLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
 
 
 

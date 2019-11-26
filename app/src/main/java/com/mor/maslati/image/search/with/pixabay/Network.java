@@ -18,14 +18,16 @@ import java.util.ArrayList;
 
 public class Network {
 
+    private ImagesHandler imagesHandler;
     private Context context;
     private String key;
     private final String apiUrl = "https://pixabay.com/api/";
 
-    public Network( Context context ) {
+    public Network( Context context, ImagesHandler imagesHandler ) {
 
         this.context = context;
         this.key     = context.getString(R.string.pixabay );
+        this.imagesHandler = imagesHandler;
     }
 
     // Helper For all API Calls
@@ -59,6 +61,8 @@ public class Network {
 
             // Todo: Connect answer from here to GridView.
             Log.d("Mor","Finished");
+            imagesHandler.fillUpGrid(images);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

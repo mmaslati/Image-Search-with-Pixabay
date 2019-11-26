@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
@@ -16,31 +17,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    Network network;
+    private ImagesHandler imagesHandler;
 
     private Button button;
     private FloatingSearchView mSearchView;
+    private RecyclerView gridRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Network Module for network calls.
-        network = new Network(this);
 
         // Visual items creation.
-        mSearchView    = findViewById(R.id.floating_search_view);
-        button         = findViewById(R.id.searchButton);
-
+        mSearchView      = findViewById(R.id.floating_search_view);
+        button           = findViewById(R.id.searchButton);
+        gridRecyclerView = findViewById(R.id.gridLinearLayout);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        imagesHandler = ImagesHandler.getInstance(this,gridRecyclerView);
 
         // On Click Listener for Search-Button.
         button.setOnClickListener(new View.OnClickListener() {
@@ -52,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 // Make the network call.
-                network.getImagesByQueryString(mSearchView.getQuery(), 1);
+                imagesHandler.queryImages( mSearchView.getQuery() );
             }
         });
 
 
-        // On Click Listener for Search
+        // On Click Listener for Search field and keyboard Submit (Enter) Button.
         mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
 
             @Override
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 //Log.d("Mor","onSearchAction( currentQuery ="+currentQuery+"  )");
 
                 // Make the network call.
-                network.getImagesByQueryString(currentQuery, 1);
+                imagesHandler.queryImages( currentQuery );
             }
 
             @Override
