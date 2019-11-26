@@ -16,14 +16,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Network {
+class Network {
 
     private ImagesHandler imagesHandler;
     private Context context;
     private String key;
     private final String apiUrl = "https://pixabay.com/api/";
 
-    public Network( Context context, ImagesHandler imagesHandler ) {
+    Network(Context context, ImagesHandler imagesHandler) {
 
         this.context = context;
         this.key     = context.getString(R.string.pixabay );
@@ -59,10 +59,7 @@ public class Network {
                 images.add(image);
             }
 
-            // Todo: Connect answer from here to GridView.
-            Log.d("Mor","Finished");
             imagesHandler.fillUpGrid(images);
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -71,7 +68,7 @@ public class Network {
 
 
 
-    public void getImagesByQueryString( String query, int pageNumber ){
+    void getImagesByQueryString(String query, int pageNumber){
 
         Response.Listener successGettingImages = new Response.Listener<String>() {
             @Override

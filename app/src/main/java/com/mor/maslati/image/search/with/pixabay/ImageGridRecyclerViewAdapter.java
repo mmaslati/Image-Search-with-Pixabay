@@ -1,6 +1,8 @@
 package com.mor.maslati.image.search.with.pixabay;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,19 @@ public class ImageGridRecyclerViewAdapter extends RecyclerView.Adapter<ImageGrid
     private List<JSONObject> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
+
+    private int screenWidth;
+    private int screenHeight;
 
 
     // data is passed into the constructor
-    public ImageGridRecyclerViewAdapter(Context context, List<JSONObject> data) {
-        this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+    ImageGridRecyclerViewAdapter(Context context, List<JSONObject> data) {
+        this.mInflater    = LayoutInflater.from(context);
+        this.mData        = data;
+        this.context      = context;
+        this.screenWidth  = getScreenSize()[0];
+        this.screenHeight = getScreenSize()[1];
     }
 
     // inflates the row layout from xml when needed
@@ -31,6 +40,18 @@ public class ImageGridRecyclerViewAdapter extends RecyclerView.Adapter<ImageGrid
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.recyclerview_images_row, parent, false);
         return new ViewHolder(view);
+    }
+
+    public int[] getScreenSize(){
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        int[] paramsArray = { width, height};
+
+        return paramsArray;
     }
 
     // binds the data to the TextView in each row
@@ -41,8 +62,17 @@ public class ImageGridRecyclerViewAdapter extends RecyclerView.Adapter<ImageGrid
 
         try {
 
+            double currentImageHeight = imageObject.getInt("previewHeight");
+            double currentImageWidth = imageObject.getInt("previewWidth");
+            double imageRatio = currentImageWidth/currentImageHeight;
+
+            double newWidthDouble = screenHeight/7*imageRatio;
+            int newWidth = (int) newWidthDouble;
+
             Picasso.get()
                     .load(imageObject.getString("previewURL"))
+                    .resize(newWidth, screenHeight/7)
+                    //.centerInside()
                     .into(holder.imageLeft);
 
         } catch (JSONException e) {
